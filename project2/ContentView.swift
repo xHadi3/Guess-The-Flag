@@ -43,6 +43,7 @@ struct ContentView: View {
                             Image(countries[number])
                                 .clipShape(.capsule)
                                 .shadow(radius: 20)
+                            
                         }
                     }
                     
