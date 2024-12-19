@@ -12,7 +12,10 @@ struct ContentView: View {
     @State private var correctAnswer = Int.random(in: 0...2)
     
     @State private var showingScore = false
+    @State private var showingEndGameScore = false
     @State private var scoreTitle = ""
+    @State private var score = 0
+    @State private var numberOfAttempt = 0
     var body: some View {
         ZStack{
             RadialGradient(stops:[
@@ -57,16 +60,26 @@ struct ContentView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Score: ???")
+                Text("Score: \(score)")
+                    .font(.title.bold())
+                    .foregroundStyle(.white)
+                Text("Attempt: \(numberOfAttempt)/8")
                     .font(.title.bold())
                     .foregroundStyle(.white)
                 Spacer()
             }
             .padding()
+            
             .alert(scoreTitle, isPresented: $showingScore){
                 Button("Continue", action: askQuestion)
             }message: {
-                Text("Your score is ???")
+                Text("Your score is \(score)")
+            }
+            
+            .alert("Game Over", isPresented: $showingEndGameScore){
+                Button("Restart", action: restart)
+            }message: {
+                Text("You scored \(score) out of 8  Questions Good Job :)")
             }
             
             
@@ -78,17 +91,33 @@ struct ContentView: View {
     func flagTapped (_ number:Int){
         if number == correctAnswer{
             scoreTitle = "Correct"
+            score += 1
+           
         }else{
-            scoreTitle = "Wrong"
+            scoreTitle = "Wrong! That's the flag of \(countries[number])"
         }
         showingScore = true
+        numberOfAttempt += 1
+        
+        if numberOfAttempt == 8{
+            showingEndGameScore = true
+        }
     }
+    
+    
     
     func askQuestion(){
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
     }
     
+    func restart()
+    {
+        countries.shuffle()
+        correctAnswer = Int.random(in: 0...2)
+        score = 0
+        numberOfAttempt = 0
+    }
     
 }
 
