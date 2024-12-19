@@ -2,7 +2,7 @@
 //  project2App.swift
 //  project2
 //
-//  Created by Hadi Al zayer on 02/05/1446 AH.
+//  Created by Hadi  on 02/05/1446 AH.
 //
 
 import SwiftUI
