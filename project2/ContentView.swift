@@ -29,6 +29,7 @@ struct ContentView: View {
     @State private var scoreTitle = ""
     @State private var score = 0
     @State private var numberOfAttempt = 0
+    @State private var selectedFlag = -1
     
     
     
@@ -55,15 +56,23 @@ struct ContentView: View {
                         Text(countries[correctAnswer])
                             .font(.largeTitle.weight(.semibold))
                     }
-                    ForEach(0..<3){ number in
+                    ForEach(0..<3 , id: \.self){ number in
                         Button{
                             flagTapped(number)
+                            
+                                             
+                            
                         }label: {
                             FlagImage(flagFileName: countries[number])
                                
-                            
                         }
+                        .rotation3DEffect(.degrees(selectedFlag == number ? 360 : 0), axis: (x:0,y: 1,z: 0))
+                        .animation(.default, value: selectedFlag)
+                        .opacity( selectedFlag == -1 || selectedFlag == number ? 1 : 0.25)
+                        .scaleEffect(selectedFlag == -1 || selectedFlag == number ? 1 : 0).animation(.easeOut, value: selectedFlag)
                     }
+                   
+                    
                     
                 }
                 
@@ -105,14 +114,17 @@ struct ContentView: View {
     
     func flagTapped (_ number:Int){
         if number == correctAnswer{
+            
             scoreTitle = "Correct"
             score += 1
+            
            
         }else{
             scoreTitle = "Wrong! That's the flag of \(countries[number])"
         }
         showingScore = true
         numberOfAttempt += 1
+        selectedFlag = number
         
         if numberOfAttempt == 8{
             showingEndGameScore = true
@@ -124,6 +136,7 @@ struct ContentView: View {
     func askQuestion(){
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        selectedFlag = -1
     }
     
     func restart()
@@ -132,6 +145,7 @@ struct ContentView: View {
         correctAnswer = Int.random(in: 0...2)
         score = 0
         numberOfAttempt = 0
+        selectedFlag = -1
     }
     
 }
