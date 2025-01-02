@@ -87,9 +87,11 @@ struct ContentView: View {
                 Text("Score: \(score)")
                     .font(.title.bold())
                     .foregroundStyle(.white)
+                    .animation(.easeIn)
                 Text("Attempt: \(numberOfAttempt)/8")
                     .font(.title.bold())
                     .foregroundStyle(.white)
+                    .animation(.easeIn)
                 Spacer()
             }
             .padding()
